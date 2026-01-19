@@ -1,0 +1,166 @@
+[gd_scene load_steps=15 format=3 uid="uid://b75kusu2cdq7g"]
+
+[ext_resource type="Script" uid="uid://bk51phcq14oxy" path="res://Player Conrollers/Default/first_person_controller.gd" id="1_jyy0p"]
+[ext_resource type="Script" uid="uid://m3ekml2psc2v" path="res://MultiplayerStuff/Client/input_synchronizer.gd" id="2_lcf2t"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lwjk5"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_g1ecg"]
+
+[sub_resource type="TorusMesh" id="TorusMesh_git6v"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4s81k"]
+albedo_color = Color(0, 0, 0, 1)
+emission_enabled = true
+emission = Color(0.674802, 0, 0.127615, 1)
+emission_energy_multiplier = 4.78
+
+[sub_resource type="SphereMesh" id="SphereMesh_5i0nk"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t1tsn"]
+albedo_color = Color(0.421637, 0, 0.129971, 1)
+
+[sub_resource type="Curve3D" id="Curve3D_3c0v4"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0.00202859, 0.00708499, -0.000848591, 0, 0, 0, 0, 0, 0, 0.0685794, 0.731389, -0.980191, 0, 0, 0, 0, 0, 0, 0.323578, 0.716471, -2.18191, 0, 0, 0, 0, 0, 0, 0.472602, 1.18157, -2.97197, 0, 0, 0, 0, 0, 0, 0.710218, -0.480691, -4.13084, 0, 0, 0, 0, 0, 0, 0.93129, 1.08961, -5.1245, 0, 0, 0, 0, 0, 0, 1.2161, 1.41061, -6.694, 0, 0, 0, 0, 0, 0, 1.57858, 0.703644, -8.15047, 0, 0, 0, 0, 0, 0, 1.6093, 1.43466, -8.94993, 0, 0, 0, 0, 0, 0, 1.82806, 1.03186, -9.63244, 0, 0, 0, 0, 0, 0, 1.89413, 1.65943, -10.5079, 0, 0, 0, 0, 0, 0, 2.06109, 1.34414, -11.0218, 0, 0, 0, 0, 0, 0, 2.21708, 1.37167, -11.7897, 0, 0, 0, 0, 0, 0, 2.34261, 1.53681, -12.5353, 0, 0, 0, 0, 0, 0, 2.5109, 1.59186, -13.3864),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+}
+point_count = 15
+
+[sub_resource type="Gradient" id="Gradient_vd0ks"]
+offsets = PackedFloat32Array(0.529851, 0.992537)
+colors = PackedColorArray(0.154876, 0.154876, 0.154876, 1, 0.462291, 0.462291, 0.462291, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_4q6q3"]
+noise_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_3vs24"]
+noise = SubResource("FastNoiseLite_4q6q3")
+color_ramp = SubResource("Gradient_vd0ks")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w5kel"]
+albedo_texture = SubResource("NoiseTexture2D_3vs24")
+uv1_scale = Vector3(1, 18.425, 1)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_kr8st"]
+properties/0/path = NodePath(".:input")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:position")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[node name="Player" type="CharacterBody3D"]
+collision_layer = 0
+script = ExtResource("1_jyy0p")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_lwjk5")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.34232295, 0, 0, 0.26418364)
+mesh = SubResource("CapsuleMesh_g1ecg")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.64104, 0)
+fov = 90.0
+
+[node name="LookRayCast" type="RayCast3D" parent="Camera3D"]
+target_position = Vector3(0, 0, -20)
+debug_shape_thickness = 1
+
+[node name="DebugLookCast" type="MeshInstance3D" parent="Camera3D/LookRayCast"]
+transform = Transform3D(0.17354, 0, 0, 0, 0.17354, 0, 0, 0, 0.17354, 0, 0, 0)
+top_level = true
+mesh = SubResource("TorusMesh_git6v")
+surface_material_override/0 = SubResource("StandardMaterial3D_4s81k")
+
+[node name="DebugLookCast2" type="MeshInstance3D" parent="Camera3D/LookRayCast/DebugLookCast"]
+transform = Transform3D(0.803283, 0, 0, 0, -3.51126e-08, -1.18314, 0, 0.803283, -5.17168e-08, 0, 0, 0)
+mesh = SubResource("TorusMesh_git6v")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_4s81k")
+
+[node name="GrappleHook1" type="Node3D" parent="."]
+
+[node name="GrappleStart" type="MeshInstance3D" parent="GrappleHook1"]
+transform = Transform3D(0.217537, 0, 0, 0, 0.217537, 0, 0, 0, 0.217537, -0.548543, 0.441206, -0.037882)
+visible = false
+mesh = SubResource("SphereMesh_5i0nk")
+
+[node name="GrappleEnd" type="MeshInstance3D" parent="GrappleHook1"]
+transform = Transform3D(0.228856, 0, 0, 0, 0.228856, 0, 0, 0, 0.228856, -0.628467, 0.441206, -0.787382)
+top_level = true
+mesh = SubResource("SphereMesh_5i0nk")
+surface_material_override/0 = SubResource("StandardMaterial3D_t1tsn")
+
+[node name="VisibleOnScreenNotifier3D" type="VisibleOnScreenNotifier3D" parent="GrappleHook1/GrappleEnd"]
+aabb = AABB(-3.27857, -3.89241, -3.02577, 6.55714, 7.78482, 6.05155)
+
+[node name="Line" type="Path3D" parent="GrappleHook1"]
+top_level = true
+curve = SubResource("Curve3D_3c0v4")
+
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="GrappleHook1/Line"]
+polygon = PackedVector2Array(-0.000945842, 0.0290405, -0.0199928, 0.0196214, -0.0327328, 0.00141066, -0.0204179, -0.0171559, -0.00195675, -0.0300432, 0.0155773, -0.023012, 0.0297729, -0.000444204, 0.0257519, 0.012036)
+mode = 2
+path_node = NodePath("..")
+path_interval_type = 1
+path_interval = 0.21
+path_simplify_angle = 0.0
+path_rotation = 2
+path_rotation_accurate = false
+path_local = false
+path_continuous_u = true
+path_u_distance = 1.0
+path_joined = false
+smooth_faces = true
+material = SubResource("StandardMaterial3D_w5kel")
+
+[node name="Time_To_Disconect" type="Timer" parent="GrappleHook1"]
+wait_time = 0.6
+one_shot = true
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -2.0
+offset_top = -4.0
+offset_right = 4.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Velocity" type="Label" parent="UI"]
+layout_mode = 0
+offset_left = -553.0
+offset_top = -306.0
+offset_right = -513.0
+offset_bottom = -283.0
+scale = Vector2(2.87363, 2.87363)
+
+[node name="ColorRect" type="ColorRect" parent="UI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 2.0
+offset_right = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TimeToStartPulling" type="Timer" parent="."]
+one_shot = true
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_kr8st")
+
+[node name="InputSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_kr8st")
+script = ExtResource("2_lcf2t")
+
+[connection signal="timeout" from="GrappleHook1/Time_To_Disconect" to="." method="release"]
