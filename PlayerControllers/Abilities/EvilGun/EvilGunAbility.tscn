@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bwbfmr1nmjwg"]
+
+[ext_resource type="Script" uid="uid://by2qbhuc53ljj" path="res://PlayerControllers/Abilities/EvilGun/evil_gun_ability.gd" id="1_1hc3p"]
+
+[node name="AbilityBasePlate" type="Node3D" unique_id=1600695075]
+script = ExtResource("1_1hc3p")

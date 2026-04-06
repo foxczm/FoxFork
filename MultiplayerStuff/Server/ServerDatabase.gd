@@ -23,8 +23,16 @@ var PRESETMAPS : Dictionary [String, PackedScene] = {
 }
 
 var PRESETMERCS : Dictionary [String, PackedScene] = {
-	"default" = load("res://PlayerControllers/Default/FirstPersonController.tscn")
+	"default" = load("res://PlayerControllers/Mercs/Default/FirstPersonController.tscn")
 }
+
+const TRIGGER_KEYS = [
+	"None", "E", "Q", "F", "R", "G", "H", "V", "B", "N", "M", "T", "Y", "X", 
+	"C", "Z", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "Shift", 
+	"Ctrl", "Alt", "Space", "Tab", "CapsLock", "Enter", 
+	"F1", "F2", "F3", "F4", "F5", "F6", "F12"
+]
+
 #endregion
 
 #region Manager

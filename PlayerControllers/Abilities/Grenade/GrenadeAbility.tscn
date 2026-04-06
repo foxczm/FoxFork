@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://l6sian0yldb7"]
+
+[ext_resource type="Script" uid="uid://qnyxd2hms1vr" path="res://PlayerControllers/Abilities/Grenade/grenade_ability.gd" id="1_seah1"]
+
+[node name="AbilityBasePlate" type="Node3D" unique_id=1600695075]
+script = ExtResource("1_seah1")
