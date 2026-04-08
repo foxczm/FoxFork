@@ -1,21 +1,20 @@
 extends Node
 class_name ServerLogic
 
-var port = 6789
 var lobby_container : LobbyContainer = null
 
 func _ready() -> void:
 	name = "NetworkConnection"
 	var peer = ENetMultiplayerPeer.new()
 	
-	var error = peer.create_server(port)
+	var error = peer.create_server(ServerDatabase.port)
 	if error != OK:
 		print("Failed to start server, error code: ", error)
 		return
 	
 	#plugging the battery into the walkie talkie
 	multiplayer.multiplayer_peer = peer
-	print('server started :D on port ', port)
+	print('server started :D on port ', ServerDatabase.port)
 	
 	multiplayer.peer_connected.connect(_on_client_connected)
 	multiplayer.peer_disconnected.connect(_on_client_disconnected)

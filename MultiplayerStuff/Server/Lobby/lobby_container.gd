@@ -37,7 +37,6 @@ func create_new_lobby(lobby_id: String, players_in_lobby: Array[int]):
 func _custom_lobby_spawn(data: Dictionary) -> Node:
 	var lobby_scene: Lobby = LOBBY.instantiate()
 	lobby_scene.name = str(data["id"]).validate_node_name()
-	lobby_scene.players_ids = data["players"]
 	
 	var offset = ServerDatabase.lobbies.size() * 10000
 	
@@ -61,6 +60,9 @@ func add_player_to_lobby(lobby_id : String, player_id : int):
 			ServerDatabase.update_lobbies(lobbies)
 			wake_up_lobby.rpc_id(player_id, lobby_id)
 			
+			var active_lobby : Lobby = get_node_or_null(lobby_id.validate_node_name())
+			if active_lobby:
+				active_lobby.on_player_joined(player_id)
 			
 		else: print(str(player_id) + ' already joined')
 	else:

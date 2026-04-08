@@ -1,9 +1,10 @@
 extends Node3D
 class_name Lobby
 
-@onready var spawner: MultiplayerSpawner = $MultiplayerSpawner
+signal player_joined_lobby(player_id: int)
+signal player_left_lobby(player_id: int)
 
-var players_ids : Array[int]
+@onready var spawner: MultiplayerSpawner = $MultiplayerSpawner
 
 var current_map : Map
 
@@ -31,7 +32,12 @@ func change_map(map : String): #maps hold gamemodes #<1>
 	
 	add_child(new_map)
 	current_map = new_map
-	
+
+func on_player_joined(player_id: int) -> void:
+	player_joined_lobby.emit(player_id)
+
+func on_player_left(player_id: int) -> void:
+	player_left_lobby.emit(player_id)
 
 func game_end():
 	pass

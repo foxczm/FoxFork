@@ -5,25 +5,25 @@ class_name Map extends Node3D
 #implementspawnpoint system and gamemode system
 #create a trello of what we need to do and a general flow chart
 #call start_gamemode to start the game
-var player_data_base : Dictionary[int, Dictionary] #playerid -> data
+var player_data_base : Dictionary[int, Dictionary] #playerid -> data(gametag, etc.)
 
 func _ready() -> void:#<ALL>
 	player_spawner.spawn_function = _spawn_player
 	register_players()
+	
+	var parent_lobby = get_parent()
+	if parent_lobby is Lobby:
+		parent_lobby.player_joined_lobby.connect(_on_player_joined)
+		parent_lobby.player_left_lobby.connect(_on_player_left)
+	
 	if !multiplayer.is_server(): return
 	start_gamemode()
-
-@abstract
-func start_gamemode()
-
-@abstract
-func end_gamemode()
 
 func _game_ended(): #<1>
 	if !multiplayer.is_server(): return
 	pass
 
-func register_players(): #<ALL>
+func register_players(): #<ALL> registers MERCS
 	player_spawner.clear_spawnable_scenes()
 	
 	for key in ServerDatabase.Mercs:
@@ -39,6 +39,21 @@ func _spawn_player(spawn_data:Dictionary):
 	merc_real.name = str(spawn_data["peer_id"])
 	merc_real.set_multiplayer_authority(int(spawn_data["peer_id"]))
 	merc_real.position = spawn_data["position"]
+	
+	merc_real.died.connect(player_died)
 	return merc_real #DONT FOGET THIS BASTAD
 
 func get_lobby_player_ids(): return int(name)
+
+@abstract
+func start_gamemode()
+
+@abstract
+func end_gamemode()
+
+@abstract
+func player_died(merc : Merc)
+
+@abstract func _on_player_joined(player_id: int)
+	
+@abstract func _on_player_left(player_id: int)

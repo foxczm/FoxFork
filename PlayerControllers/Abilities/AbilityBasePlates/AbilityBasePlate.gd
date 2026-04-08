@@ -14,7 +14,7 @@ var currently_active = false
 	# --- NUMBERS ---
 	"1", "2", "3", "4", "5", "6", "7", "8", "9", "0",
 	# --- MODIFIERS ---
-	"Shift", "Ctrl", "Alt", "Space", "Tab", "CapsLock", "Enter",
+	"Shift", "Ctrl", "Alt", "Space",  "CapsLock", "Enter",
 	# --- UI & MISC ---
 	"F1", "F2", "F3", "F4", "F5", "F6", "F12"
 ) var trigger_key: String = "None"

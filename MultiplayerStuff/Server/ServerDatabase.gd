@@ -2,17 +2,21 @@ extends Node
 #and manager ;)
 #if i wanted permanent stuff, look into just a simple cfg file for the future
 
+
 #region DataBase
 
 signal server_maps_updated #TODO
 signal lobbies_updated 
 
-var Players : Dictionary [int, Dictionary] #id, [gamertag, lobby]
+
 var Maps : Dictionary [String, PackedScene] = {} #DNS (does not sync atm)
 var Mercs : Dictionary [String, PackedScene] = {} #DNS
 var Characters : Dictionary [String, PackedScene] = {} #DNS
+var Players : Dictionary [int, Dictionary] #id, [gamertag, lobby]
 var lobbies : Dictionary[String, Array] = {} #lobbyid = [player_id, ...]
 
+var port = "10.42.0.1"
+var address = 6789
 #var chat 
 #endregion
 
@@ -47,10 +51,10 @@ func sync_players(_players):
 	Players = _players
 
 func update_lobbies(_lobbies):
-	lobbies = _lobbies
-	rpc("sync_lobbies", lobbies)
+	rpc("sync_lobbies", _lobbies)
+
 # "authority" means ONLY the server is allowed to trigger this on clients
-@rpc("authority","call_remote","reliable")
+@rpc("authority","call_local","reliable")
 func sync_lobbies(_lobbies):
 	lobbies = _lobbies
 	lobbies_updated.emit()

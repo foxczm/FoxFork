@@ -1,14 +1,12 @@
 extends Node
 class_name ClientLogic
 
-var address = "localhost"
-var port = 6789
 
 func _ready() -> void:
 	name = "NetworkConnection"
 	var peer = ENetMultiplayerPeer.new()
 	
-	var error = peer.create_client(address, port)
+	var error = peer.create_client(ServerDatabase.address, ServerDatabase.port)
 	if error != OK:
 		print('error creating client with error code: ', error)
 		return

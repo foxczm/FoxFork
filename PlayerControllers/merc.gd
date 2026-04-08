@@ -8,6 +8,7 @@
 @export_group("Universal Properties")
 @export var health :float = 100.0
 @export var jump_strength = 2
+@export var gravity = 9.8
 @export var friction = .1
 @export var air_acceleration = .3
 @export var jump_buffer = .1
@@ -18,7 +19,9 @@
 @export var abilities : Array[Ability]
 #reminder abilities  can have their own ui
 
-signal died #Server will disable input on character
+var dead = false
+
+signal died(_self) #Server will disable input on character
 signal took_damage
 
 func _ready() -> void:
@@ -65,7 +68,7 @@ func _physics_process(delta: float) -> void:
 			velocity = velocity.lerp(Vector3.ZERO, delta * 5) 
 		sv_airaccelerate(movement_dir, delta)
 
-	velocity.y -= 9.8 * delta
+	velocity.y -= gravity * delta
 	move_and_slide()
 
 func sv_airaccelerate(movement_dir, delta):
@@ -102,7 +105,7 @@ func check_abilities() -> void:
 		if !i.is_multiplayer_authority():
 			i.set_multiplayer_authority(int(name), true)
 		
-		# Convert "Q" to the integer keycode (e.g., 81)
+		# Convert key to the integer keycode (e.g. Q -> 81)
 		var key_code = OS.find_keycode_from_string(i.trigger_key)
 		
 		# Finally, check the hardware state
@@ -112,10 +115,20 @@ func check_abilities() -> void:
 @rpc("any_peer","call_remote", 'reliable')
 func take_damage(damage):
 	health -= damage
-	if health <= 0:
-		emit_signal("died")
+	if health <= 0 and not dead:
+		dead = true
+		death_effects.rpc()
+		die.rpc_id(1)
 	else:
 		emit_signal("took_damage")
+
+@rpc("any_peer", "call_local")
+func death_effects():
+	pass
+
+@rpc("authority", "call_remote", "reliable")
+func die():
+	emit_signal("died", self)
 
 @abstract func custom_process(delta : float) #use this for addons, physics process is used for default movement
 @abstract func custom_ready()
