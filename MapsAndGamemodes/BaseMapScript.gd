@@ -19,7 +19,7 @@ func _ready() -> void:
 	#player_spawner.spawn_limit = 58
 	
 	player_spawner.spawn_function = _spawn_player
-	register_players()
+	#register_players()
 	
 	var parent_lobby = get_parent()
 	if parent_lobby is Lobby:
