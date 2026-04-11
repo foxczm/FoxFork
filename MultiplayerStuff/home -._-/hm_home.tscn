@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bv5f1vtm3y4ax" path="res://MultiplayerStuff/home -._-/hm_home.gd" id="1_cb1aq"]
 [ext_resource type="Texture2D" uid="uid://b7b8tego25aq3" path="res://PrototypeAssets/PrototypeMapAssets/Vector/texture_02.svg" id="2_vnwpo"]
+[ext_resource type="PackedScene" uid="uid://bs0ioqnyph33c" path="res://Misc/TransitionWorkDolley/camera_follow_path.tscn" id="3_815gs"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qt646"]
 albedo_texture = ExtResource("2_vnwpo")
@@ -16,6 +17,13 @@ background_mode = 2
 background_energy_multiplier = 1.07
 sky = SubResource("Sky_firbl")
 ambient_light_color = Color(0.63375676, 0.6337568, 0.63375676, 1)
+
+[sub_resource type="Curve3D" id="Curve3D_jma86"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0.039081573, 0.07580018, -0.010753155, -3.3462582, -3.389576, 1.3895359, 3.3462582, 3.389576, -1.3895359, 13.215004, 3.7732704, -2.2403207, -4.60569, -0.7710161, 0.6747551, 4.60569, 0.7710161, -0.6747551, 23.141605, 15.680762, -7.074105, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+"tilts": PackedFloat32Array(0, 0, 0, 0)
+}
+point_count = 4
 
 [node name="Lobby" type="Node3D" unique_id=678425904]
 script = ExtResource("1_cb1aq")
@@ -50,5 +58,6 @@ environment = SubResource("Environment_n31ts")
 [node name="PlayerSpawner" type="Marker3D" parent="." unique_id=2128248748]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3790727, 0)
 
-[node name="Camera3D" type="Camera3D" parent="." unique_id=937780086]
-transform = Transform3D(1, 0, 0, 0, 0.49999997, 0.86602545, 0, -0.86602545, 0.49999997, -17.34317, 34.01458, 34.429657)
+[node name="TransOutPath" parent="." unique_id=1495840154 instance=ExtResource("3_815gs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.691845, -0.13469005, 4.244759)
+curve = SubResource("Curve3D_jma86")

@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://bs0ioqnyph33c"]
+
+[ext_resource type="Script" uid="uid://q2t5lngmwtv7" path="res://Misc/TransitionWorkDolley/camera_follow.gd" id="1_i3ncc"]
+
+[sub_resource type="Curve" id="Curve_doon7"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[node name="CameraFollowPath" type="Path3D" unique_id=1495840154]
+script = ExtResource("1_i3ncc")
+easing_graph = SubResource("Curve_doon7")
+
+[node name="PathFollow3D" type="PathFollow3D" parent="." unique_id=1301980135]
+
+[node name="CameraTargetPoint" type="Marker3D" parent="." unique_id=1641026556]

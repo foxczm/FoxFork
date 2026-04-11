@@ -2,12 +2,19 @@
 
 [ext_resource type="Script" uid="uid://01fq2mp8vd8q" path="res://MultiplayerStuff/Server/Lobby/lobby.gd" id="1_j3nwk"]
 [ext_resource type="Script" uid="uid://cv604ucylqjo0" path="res://MultiplayerStuff/Server/Lobby/map_voting.gd" id="2_jbcu6"]
+[ext_resource type="PackedScene" uid="uid://bs0ioqnyph33c" path="res://Misc/TransitionWorkDolley/camera_follow_path.tscn" id="3_a11av"]
+
+[sub_resource type="Curve3D" id="Curve3D_trshn"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 20.438396, 11.93112, -3.1577263, 0, 0, 0, 0, 0, 0, 6.5764637, 12.330151, -22.930555, 0, 0, 0, 0, 0, 0, -8.905577, 12.343216, -28.759085, 0, 0, 0, 0, 0, 0, -28.749214, 12.359669, -34.588825, 0, 0, 0, 0, 0, 0, -54.025486, 12.375427, -14.290621, 0, 0, 0, 0, 0, 0, -54.283783, 12.369431, 18.768726, 0, 0, 0, 0, 0, 0, -35.471504, 12.351372, 37.457756, 0, 0, 0, 0, 0, 0, -8.090147, 12.3294525, 41.340263, 0, 0, 0, 0, 0, 0, 4.481924, 12.324902, 36.037064, 0, 0, 0, 0, 0, 0, 9.611183, 12.321869, 19.175232),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+}
+point_count = 10
 
 [node name="Lobby" type="Node3D" unique_id=850969054]
 script = ExtResource("1_j3nwk")
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=895859345]
-_spawnable_scenes = PackedStringArray("<null>")
 spawn_path = NodePath("..")
 spawn_limit = 1
 
@@ -43,3 +50,14 @@ offset_top = 14.0
 offset_right = 718.0
 offset_bottom = 43.0
 text = "Vote For Map"
+
+[node name="CameraFollowPath" parent="." unique_id=1495840154 instance=ExtResource("3_a11av")]
+curve = SubResource("Curve3D_trshn")
+
+[node name="PathFollow3D" parent="CameraFollowPath" index="0" unique_id=1301980135]
+transform = Transform3D(0.81882364, 0.009484489, 0.5739657, 0, 0.9998623, -0.016522223, -0.5740443, 0.013528788, 0.81871164, 20.438396, 11.93112, -3.1577263)
+
+[node name="CameraTargetPoint" parent="CameraFollowPath" index="1" unique_id=1641026556]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.464569, 0, 0)
+
+[editable path="CameraFollowPath"]

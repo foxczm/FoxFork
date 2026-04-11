@@ -5,6 +5,7 @@ signal player_joined_lobby(player_id: int)
 signal player_left_lobby(player_id: int)
 
 @onready var spawner: MultiplayerSpawner = $MultiplayerSpawner
+@onready var camera_follow_path: CameraFollowPath = $CameraFollowPath
 
 var current_map : Map
 var connected_players : Array[int] = [] # The Lobby's master list

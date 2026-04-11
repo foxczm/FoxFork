@@ -1,5 +1,6 @@
 extends Map
 class_name HM
+@onready var trans_out_path: CameraFollowPath = $TransOutPath
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

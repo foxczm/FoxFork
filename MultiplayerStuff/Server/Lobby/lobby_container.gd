@@ -6,6 +6,7 @@ const LOBBY = preload("res://MultiplayerStuff/Server/Lobby/Lobby.tscn")
 #RUNS ONLY ON SERVER
 var lobbies : Dictionary[String, Array] = {} #lobbyid = [player_id, ...]
 @onready var multiplayer_spawner: MultiplayerSpawner = $MultiplayerSpawner
+@onready var lobby_changer_camera: LobbyChangerCamera = $LobbyChangerCamera
 
 #might have to have a bool, if match started then always spawn the map if not there, this is so people late to joining gets synced up
 
@@ -28,7 +29,7 @@ func create_new_lobby(lobby_id: String, players_in_lobby: Array[int]):
 			lob.call_deferred("change_map", "hm_home")
 		else:
 			lob.call_deferred("change_map", "sb_lobby")
-			
+
 # This runs on EVERY machine when the lobby spawns
 func _custom_lobby_spawn(data: Dictionary) -> Node:
 	var lobby_scene: Lobby = LOBBY.instantiate()
@@ -109,16 +110,54 @@ func change_lobby(new_lobby_id: String, player_id: int) -> void:
 	if old_lobby_id == new_lobby_id:
 		print("Player " + str(player_id) + " is already in lobby: " + new_lobby_id)
 		return
+	
+	# 4.5 Trigger the client-side camera transition
+	# We pass the responsibility to the client so it can animate locally.
+	if old_lobby_id == 'home':
+		start_client_camera_transition.rpc_id(player_id, old_lobby_id, new_lobby_id)
+	else:
+		finalize_lobby_change_on_server(old_lobby_id, new_lobby_id)
 
+# --- NEW: Runs ONLY on the specific client doing the transition ---
+@rpc("authority", "call_remote", "reliable")
+func start_client_camera_transition(old_lobby_id: String, new_lobby_id: String):
+	# NOTE: Ensure that get_node(lobby_id) actually returns a CameraFollowPath.
+	# If your Lobby scene is a standard Node3D, you may need to target the path node inside it:
+	# e.g., get_node(old_lobby_id).get_node("CameraFollowPath")
+	
+	wake_up_lobby(new_lobby_id)#make sure you can diddle that tween path
+	
+	var old_lobby : Lobby = get_node_or_null(old_lobby_id.validate_node_name())
+	var new_lobby : Lobby = get_node_or_null(new_lobby_id.validate_node_name())
+	var old_path = old_lobby.camera_follow_path
+	var new_path = new_lobby.camera_follow_path
+	
+	if old_lobby_id == "home":
+		old_path = old_lobby.get_node('home').trans_out_path #maps have same name as lobby
+	
+	if old_path and new_path:
+		lobby_changer_camera.set_dolley_sequence([old_path, new_path])
+		await lobby_changer_camera.finished_with_all_camera_transitions
+	
+	# Once the animation finishes, tell the server to complete the data swap
+	finalize_lobby_change_on_server.rpc_id(1, old_lobby_id, new_lobby_id)
+
+
+# --- NEW: Runs ONLY on the server after the client finishes ---
+@rpc("any_peer", "call_remote", "reliable")
+func finalize_lobby_change_on_server(old_lobby_id: String, new_lobby_id: String):
+	if !multiplayer.is_server(): return
+	
+	# Get the ID of the client who just finished their animation
+	var player_id = multiplayer.get_remote_sender_id()
+	
 	# 5. Execute the swap
 	if old_lobby_id != "":
 		remove_player_from_lobby(old_lobby_id, player_id)
-		# Put the old lobby to sleep on the client side so it disappears
 		put_lobby_to_sleep.rpc_id(player_id, old_lobby_id)
 
-	# 6. Add them to the new lobby (This already calls wake_up_lobby for the client!)
+	# 6. Add them to the new lobby
 	add_player_to_lobby(new_lobby_id, player_id)
-
 @rpc("authority", "call_remote", "reliable")
 func put_lobby_to_sleep(lobby_id: String): # nighty night
 	var inactive_lobby: Lobby = get_node_or_null(lobby_id.validate_node_name())

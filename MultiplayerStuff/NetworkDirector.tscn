@@ -2,10 +2,15 @@
 
 [ext_resource type="Script" uid="uid://b4lw6kpyphp8r" path="res://MultiplayerStuff/network_director.gd" id="1_ubnqp"]
 [ext_resource type="PackedScene" uid="uid://dtib8ppqweogq" path="res://MultiplayerStuff/Server/Lobby/LobbyContainer.tscn" id="2_qpoo3"]
+[ext_resource type="Script" uid="uid://dhe8i5h6yjeyy" path="res://Misc/TransitionWorkDolley/lobby_changer_camera.gd" id="3_e1cqa"]
 
 [node name="NetworkDirector" type="Node" unique_id=1806847710]
 script = ExtResource("1_ubnqp")
 
 [node name="LobbyContainer" parent="." unique_id=1974402244 instance=ExtResource("2_qpoo3")]
+
+[node name="LobbyChangerCamera" type="Camera3D" parent="LobbyContainer" unique_id=154608724]
+script = ExtResource("3_e1cqa")
+transition_duration = null
 
 [editable path="LobbyContainer"]
