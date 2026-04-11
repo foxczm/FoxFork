@@ -17,10 +17,9 @@ background_energy_multiplier = 1.07
 sky = SubResource("Sky_firbl")
 ambient_light_color = Color(0.63375676, 0.6337568, 0.63375676, 1)
 
-[node name="Lobby" type="Node3D" unique_id=678425904 node_paths=PackedStringArray("player_spawn", "player_spawner")]
+[node name="Lobby" type="Node3D" unique_id=678425904 node_paths=PackedStringArray("player_spawn")]
 script = ExtResource("1_5cp0e")
 player_spawn = NodePath("PlayerSpawner")
-player_spawner = NodePath("MultiplayerSpawner")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=1588121579]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.523632, -1.8967204, 1.4092712)
