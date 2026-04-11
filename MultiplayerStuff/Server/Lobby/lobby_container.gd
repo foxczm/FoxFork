@@ -26,8 +26,8 @@ func create_new_lobby(lobby_id: String, players_in_lobby: Array[int]):
 		
 		if lobbies.size() == 1:
 			lob.call_deferred("change_map", "hm_home")
-		else:
-			lob.call_deferred("change_map", "sb_lobby")
+		#else:
+			#lob.call_deferred("change_map", "sb_lobby")
 # This runs on EVERY machine when the lobby spawns
 func _custom_lobby_spawn(data: Dictionary) -> Node:
 	var lobby_scene: Lobby = LOBBY.instantiate()
