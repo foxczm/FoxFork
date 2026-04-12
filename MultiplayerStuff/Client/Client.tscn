@@ -1,7 +1,7 @@
-[gd_scene format=3 uid="uid://cyawuc7eor0cc"]
+[gd_scene format=3 uid="uid://dwj4beqjj5aoo"]
 
 [ext_resource type="Script" uid="uid://dol3txxupc5hl" path="res://MultiplayerStuff/Client/client.gd" id="1_pqix3"]
-[ext_resource type="PackedScene" uid="uid://daofh3pqieqxy" path="res://MultiplayerStuff/Lobby/NetworkLobby.tscn" id="2_tb2bt"]
+[ext_resource type="PackedScene" uid="uid://d3a6djfre3wqt" path="res://MultiplayerStuff/NetworkDirector.tscn" id="2_tb2bt"]
 
 [node name="Client" type="Node" unique_id=697921905]
 script = ExtResource("1_pqix3")

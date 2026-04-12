@@ -123,6 +123,11 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	if is_multiplayer_authority():
 		receive_pos_from_server.rpc(global_position, global_rotation)
+	
+	if global_position.y < -1000:
+		dead = true
+		death_effects.rpc()
+		die.rpc_id(1)
 
 func sv_airaccelerate(movement_dir, delta):
 	var air_strength = 3

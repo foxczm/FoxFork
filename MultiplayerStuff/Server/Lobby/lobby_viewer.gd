@@ -15,13 +15,14 @@ func open():
 	tween.tween_property(background, "modulate:a", 1.0, .3)
 	await tween.finished
 	animation.play("on")
-	await animation.animation_finished
+	animation.show()
 	panel.show()
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 func close():
 	var tween = create_tween()
 	tween.tween_property(background, "modulate:a", 0.0, .3)
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func create_lobby_views():
 	for i in v_box_container.get_children():

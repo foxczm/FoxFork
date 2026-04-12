@@ -22,8 +22,8 @@ script = ExtResource("1_5cp0e")
 player_spawn = NodePath("PlayerSpawner")
 map_name = "sb_lobby"
 
-[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=1588121579]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.523632, -1.8967204, 1.4092712)
+[node name="CSGBox3D2" type="CSGBox3D" parent="." unique_id=409190496]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.7690873, 0)
 material_override = SubResource("StandardMaterial3D_qt646")
 use_collision = true
 size = Vector3(54.756798, 1, 58.8974)

@@ -47,7 +47,6 @@ func set_dolley_sequence(queue: Array[CameraFollowPath]):
 		
 		current_path_following = current_dolley
 		
-		# ---- NEW: Show text if we are on the final map ----
 		if is_last_index:
 			current_dolley.display_lobby_name()
 		
@@ -78,7 +77,6 @@ func transition_to_next_dolley(dolley: CameraFollowPath):
 	# Tween position
 	tween.tween_property(self, "global_position", target_start_pos, transition_duration)
 	
-	# Tween rotation (Godot 4's Node3D.quaternion property is perfect for this)
 	tween.tween_property(self, "quaternion", final_quat, transition_duration)
 	
 	await tween.finished

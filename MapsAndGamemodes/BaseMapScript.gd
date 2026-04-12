@@ -46,7 +46,9 @@ func _process(delta: float) -> void:
 
 func _game_ended(): #<1>
 	if !multiplayer.is_server(): return
-	pass
+	var parent_lobby = get_parent()
+	if parent_lobby is Lobby:
+		parent_lobby.game_end()
 
 func register_players(): #<ALL> registers MERCS
 	player_spawner.clear_spawnable_scenes()
@@ -71,7 +73,6 @@ func _spawn_player(spawn_data:Dictionary):
 func get_lobby_player_ids(): return int(name)
 
 @abstract func start_gamemode()
-@abstract func end_gamemode()
 @abstract func player_died(merc : Merc)
 @abstract func _on_player_joined(player_id: int)
 @abstract func _on_player_left(player_id: int)

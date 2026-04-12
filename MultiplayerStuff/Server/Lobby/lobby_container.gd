@@ -20,7 +20,6 @@ func _ready():
 func create_new_lobby(lobby_id: String, players_in_lobby: Array[int]):
 	if multiplayer.is_server():
 		var data = { "id": lobby_id, "players": players_in_lobby }
-		
 		lobbies[lobby_id] = players_in_lobby
 		ServerDatabase.update_lobbies(lobbies)
 		var lob : Lobby = multiplayer_spawner.spawn(data)
@@ -35,9 +34,19 @@ func _custom_lobby_spawn(data: Dictionary) -> Node:
 	var lobby_scene: Lobby = LOBBY.instantiate()
 	lobby_scene.name = str(data["id"]).validate_node_name()
 	
-	var offset = ServerDatabase.Lobbies.size() * 10000
+	# --- GRID SPAWN LOGIC ---
+	var index = ServerDatabase.Lobbies.size()
+	var columns = 8 # An 8x8 grid perfectly fits up to 64 lobbies
+	var spacing = 1500.0 # Distance between lobbies. Adjust if your map is larger!
 	
-	lobby_scene.position = Vector3(offset, 0, 0)
+	# Math to convert a 1D index into a 2D grid position
+	var grid_x = index % columns
+	var grid_z = floor(index / columns)
+	
+	# Spawn along the X and Z axes (flat ground), leaving Y at 0
+	lobby_scene.position = Vector3(grid_x * spacing, 0, grid_z * spacing)
+	# ------------------------
+	
 	if not multiplayer.is_server() and multiplayer.get_unique_id() not in data["players"]:
 		lobby_scene.hide() #HACK here we start >;,}
 		lobby_scene.process_mode = Node.PROCESS_MODE_DISABLED

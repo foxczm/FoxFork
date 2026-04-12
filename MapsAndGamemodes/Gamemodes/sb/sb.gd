@@ -7,12 +7,15 @@ var sandbox_leaderboard
 
 @export var player_spawn : Node3D
 @export var respawn_delay : float = 5.0 # How long they wait in seconds
-
+@export var gamemode_length = 10.0
 var player_stats : Dictionary[int, Dictionary]
 
 func custom_ready():
 	sandbox_leaderboard = SANDBOX_LEADERBOARD_UI.instantiate()
 	add_child(sandbox_leaderboard)
+	if !multiplayer.is_server(): return
+	await get_tree().create_timer(gamemode_length).timeout
+	_game_ended()
 
 func custom_process(delta : float):
 	# 1. Only the server manages respawns
@@ -31,9 +34,6 @@ func custom_process(delta : float):
 				_respawn_player(player_id)
 
 func start_gamemode():
-	pass
-
-func end_gamemode():
 	pass
 
 func player_died(merc : Merc):
@@ -90,3 +90,14 @@ func _on_player_joined(player_id: int) -> void:
 	# They connected to the network! Set up their scoreboard stats right away.
 	player_stats[player_id] = { "kills": 0, "deaths": 0, "is_dead": true, "respawn_timer": 0.0 }
 	sync_player_stats.rpc(player_stats)
+
+# Call this manually, or let Godot's built in tree-exiting catch it
+func _exit_tree() -> void:
+	if multiplayer.is_server():
+		_cleanup_network_nodes()
+
+func _cleanup_network_nodes() -> void:
+	# Tell the spawner to cleanly despawn all active players across the network
+	# before this Map node gets deleted.
+	for child in player_spawner.get_children():
+		child.queue_free()
