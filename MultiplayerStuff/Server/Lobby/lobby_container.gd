@@ -15,11 +15,19 @@ func _ready():
 	if !multiplayer.is_server(): return
 	multiplayer.peer_disconnected.connect(_on_player_disconnected)
 
-# The server calls this to build the lobby package
 @rpc("any_peer", "call_remote", "reliable")
 func create_new_lobby(lobby_id: String, players_in_lobby: Array[int]):
 	if multiplayer.is_server():
-		var data = { "id": lobby_id, "players": players_in_lobby }
+		# Grab the index on the server BEFORE adding the new lobby to the dictionary
+		var current_index = lobbies.size() 
+		
+		# Pack the index into the data package!
+		var data = { 
+			"id": lobby_id, 
+			"players": players_in_lobby,
+			"grid_index": current_index # <--- ADD THIS
+		}
+		
 		lobbies[lobby_id] = players_in_lobby
 		ServerDatabase.update_lobbies(lobbies)
 		var lob : Lobby = multiplayer_spawner.spawn(data)
@@ -35,20 +43,20 @@ func _custom_lobby_spawn(data: Dictionary) -> Node:
 	lobby_scene.name = str(data["id"]).validate_node_name()
 	
 	# --- GRID SPAWN LOGIC ---
-	var index = ServerDatabase.Lobbies.size()
-	var columns = 8 # An 8x8 grid perfectly fits up to 64 lobbies
-	var spacing = 1500.0 # Distance between lobbies. Adjust if your map is larger!
+	# Read the exact index the server assigned to this specific lobby!
+	var index = data["grid_index"] 
 	
-	# Math to convert a 1D index into a 2D grid position
+	var columns = 8 
+	var spacing = 1500.0 
+	
 	var grid_x = index % columns
 	var grid_z = floor(index / columns)
 	
-	# Spawn along the X and Z axes (flat ground), leaving Y at 0
 	lobby_scene.position = Vector3(grid_x * spacing, 0, grid_z * spacing)
 	# ------------------------
 	
 	if not multiplayer.is_server() and multiplayer.get_unique_id() not in data["players"]:
-		lobby_scene.hide() #HACK here we start >;,}
+		lobby_scene.hide() 
 		lobby_scene.process_mode = Node.PROCESS_MODE_DISABLED
 		
 	return lobby_scene
