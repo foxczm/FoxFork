@@ -195,6 +195,11 @@ _data = {
 &"throw": SubResource("Animation_8vxmg")
 }
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_seah1"]
+properties/0/path = NodePath("Grenade:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
 [node name="GrenadeAbility" type="Node3D" unique_id=1600695075 node_paths=PackedStringArray("visual_hand")]
 script = ExtResource("1_seah1")
 AbilityDescription = "Blow them bitsy itsy bitsy spider style"
@@ -248,5 +253,8 @@ one_shot = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1062011076]
 libraries/ = SubResource("AnimationLibrary_nla6h")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=888136363]
+replication_config = SubResource("SceneReplicationConfig_seah1")
 
 [connection signal="timeout" from="FuseTimer" to="." method="_on_fuse_timer_timeout"]
