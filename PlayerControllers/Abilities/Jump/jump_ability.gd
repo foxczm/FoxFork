@@ -1,4 +1,4 @@
-extends OneShotAbility
+extends Ability
 
 @export_category("Jump Ability Settings")
 @export var auto_bhop: bool = false ## If true, holding the button continuously jumps

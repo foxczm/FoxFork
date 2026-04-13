@@ -17,3 +17,6 @@ func activate(abilities : Array[Ability], merc : Merc):
 				i.currently_active = false
 		equip()
 		self.merc = merc
+
+func connected_process():
+	pass

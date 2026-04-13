@@ -1,4 +1,5 @@
 extends Control
+#autoload
 @onready var menu: Control = $Menu
 @onready var chat_input: LineEdit = $Chat/VBoxContainer/ChatInput
 
