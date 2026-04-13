@@ -1,4 +1,4 @@
-@abstract class_name Merc extends CharacterBody3D
+class_name Merc extends CharacterBody3D
 
 signal died(_self) #Server will disable input on character
 signal took_damage
@@ -20,6 +20,7 @@ const MERC_LABEL = preload("res://MultiplayerStuff/Client/MercLabel.tscn")
 @export var visual_hand : Node3D
 @export var merc_UI_color : Color
 @export var camera_fov : float = 90.0
+@export var debug_mode : bool = false
 
 @export var abilities : Array[Ability]
 #reminder abilities  can have their own ui
@@ -41,8 +42,45 @@ const TEAM_COLORS = {
 }
 
 
-
 func _ready() -> void:
+	# ==========================================
+	# DEBUG MODE SETUP
+	# ==========================================
+	if debug_mode:
+		# 1. Create a dummy server so RPCs and Authority work locally
+		var peer = ENetMultiplayerPeer.new()
+		peer.create_server(9999) # Arbitrary port
+		multiplayer.multiplayer_peer = peer
+		
+		# Force name to 1 (Server ID) so label and damage logic work
+		name = "1"
+		set_multiplayer_authority(1)
+		
+		# 2. Spawn a debug floor
+		var debug_floor = CSGBox3D.new()
+		debug_floor.size = Vector3(100, 1, 100) # Big platform
+		debug_floor.use_collision = true
+		debug_floor.top_level = true # Prevents the floor from moving WITH the player
+		debug_floor.global_position = global_position - Vector3(0, 1, 0)
+		
+		# Optional: Add a checkerboard or basic color so you can see movement
+		var mat = StandardMaterial3D.new()
+		mat.albedo_color = Color.DARK_GRAY
+		debug_floor.material = mat
+		
+		add_child(debug_floor)
+		
+		# 3. Add a sun so the scene isn't pitch black
+		var debug_light = DirectionalLight3D.new()
+		debug_light.top_level = true
+		debug_light.rotation_degrees = Vector3(-45, 45, 0)
+		add_child(debug_light)
+		
+		print("--- DEBUG MODE ACTIVE: Local Server & Floor Generated ---")
+
+	# ==========================================
+	# STANDARD SETUP
+	# ==========================================
 	target_position = global_position
 	target_rotation = global_rotation
 	
@@ -71,6 +109,7 @@ func _ready() -> void:
 		
 		show_visual_body_to_world.rpc()
 		name_label_instance.hide() #hide it local
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 @rpc("any_peer","call_remote","reliable")
 func show_visual_body_to_world():
@@ -354,5 +393,7 @@ func death_effects():
 func die():
 	emit_signal("died", self)
 
-@abstract func custom_process(delta : float) #use this for addons, physics process is used for default movement
-@abstract func custom_ready()
+func custom_process(delta : float):
+	pass #use this for addons, physics process is used for default movement
+func custom_ready():
+	pass

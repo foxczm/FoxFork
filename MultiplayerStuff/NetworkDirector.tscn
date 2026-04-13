@@ -11,7 +11,7 @@ script = ExtResource("1_ubnqp")
 
 [node name="Animation" parent="LobbyContainer/LobbyViewer" parent_id_path=PackedInt32Array(1974402244, 1785813309) index="2" unique_id=1473041187]
 visible = true
-frame = 8
+frame = 7
 frame_progress = 1.0
 
 [node name="LobbyChangerCamera" type="Camera3D" parent="LobbyContainer" unique_id=154608724]

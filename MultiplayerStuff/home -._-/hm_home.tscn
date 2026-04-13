@@ -9,17 +9,6 @@
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qt646"]
 albedo_texture = ExtResource("2_vnwpo")
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_qt646"]
-
-[sub_resource type="Sky" id="Sky_firbl"]
-sky_material = SubResource("ProceduralSkyMaterial_qt646")
-
-[sub_resource type="Environment" id="Environment_n31ts"]
-background_mode = 2
-background_energy_multiplier = 1.07
-sky = SubResource("Sky_firbl")
-ambient_light_color = Color(0.63375676, 0.6337568, 0.63375676, 1)
-
 [sub_resource type="Curve3D" id="Curve3D_jma86"]
 _data = {
 "points": PackedVector3Array(-2.821247, -0.22147465, 0.004088402, 2.821247, 0.22147465, -0.004088402, 0.26595688, 2.4640374, -0.26728296, -1.725811, -1.0131636, 0.04024124, 1.725811, 1.0131636, -0.04024124, 18.483143, 6.619418, 0.1871171, 0, 0, 0, 1.3860474, 1.7778511, -0.17006874, 21.771185, 11.145907, 0.4551301),
@@ -36,6 +25,18 @@ point_count = 2
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_cisks"]
 size = Vector3(1.0210266, 3.0184937, 1.3671265)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_cisks"]
+sky_top_color = Color(0.57615244, 0.28667474, 0.76542753, 1)
+sky_horizon_color = Color(0.5501559, 0.69483125, 0.6160683, 1)
+ground_bottom_color = Color(0.1271401, 0.083522774, 0.02068419, 1)
+
+[sub_resource type="Sky" id="Sky_e1cqa"]
+sky_material = SubResource("ProceduralSkyMaterial_cisks")
+
+[sub_resource type="Environment" id="Environment_4r2bv"]
+background_mode = 2
+sky = SubResource("Sky_e1cqa")
 
 [node name="hm_home" type="Node3D" unique_id=678425904]
 script = ExtResource("1_cb1aq")
@@ -64,9 +65,6 @@ material_override = SubResource("StandardMaterial3D_qt646")
 use_collision = true
 size = Vector3(16.028257, 8.044556, 1.4325857)
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=534643691]
-environment = SubResource("Environment_n31ts")
-
 [node name="PlayerSpawner" type="Marker3D" parent="." unique_id=2128248748]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3790727, 0)
 
@@ -75,7 +73,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.04814, -1.0077102, 3.84792
 curve = SubResource("Curve3D_jma86")
 
 [node name="PathFollow3D" parent="TransOutPath" index="0" unique_id=1301980135]
-transform = Transform3D(0.0014489901, -0.07825765, -0.9968834, 0, 0.9968844, -0.07825774, 0.999948, 0.000113400456, 0.0014445492, 0.26595688, 2.4640374, -0.26728296)
+transform = Transform3D(0.00144899, -0.07825765, -0.9968834, 0, 0.9968844, -0.07825774, 0.9999479, 0.000113400456, 0.0014445492, 0.26595688, 2.4640374, -0.26728296)
 
 [node name="TESTCAM" type="Camera3D" parent="TransOutPath/PathFollow3D" index="0" unique_id=344265971]
 transform = Transform3D(0.9983976, 0, -0.056588236, 0, 1, 0, 0.056588236, 0, 0.9983976, 0, 0, 0)
@@ -89,7 +87,7 @@ curve = SubResource("Curve3D_cisks")
 dur = 2.0
 
 [node name="PathFollow3D" parent="TransMiddle" index="0" unique_id=1301980135]
-transform = Transform3D(-0.004890978, 0.02402893, -0.99968266, -1.8626131e-09, 0.99969804, 0.024029138, 0.9999708, 0.00011753027, -0.0048895683, 0.039081573, 0.07580018, -0.010753155)
+transform = Transform3D(-0.0048909774, 0.02402893, -0.99968266, -1.8626128e-09, 0.99969804, 0.024029138, 0.9999707, 0.00011753027, -0.0048895683, 0.039081573, 0.07580018, -0.010753155)
 
 [node name="TESTCAM" type="Camera3D" parent="TransMiddle/PathFollow3D" index="0" unique_id=1110072097]
 transform = Transform3D(0.9983976, 0, -0.056588236, 0, 1, 0, 0.056588236, 0, 0.9983976, 0, 0, 0)
@@ -144,6 +142,9 @@ transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0.13
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.100875854, 0.7748108, 0.01651001)
 shape = SubResource("BoxShape3D_cisks")
 debug_color = Color(0.3192286, 0.6254602, 0, 0.41960785)
+
+[node name="WorldEnvironment2" type="WorldEnvironment" parent="." unique_id=1164529622]
+environment = SubResource("Environment_4r2bv")
 
 [editable path="TransOutPath"]
 [editable path="TransMiddle"]

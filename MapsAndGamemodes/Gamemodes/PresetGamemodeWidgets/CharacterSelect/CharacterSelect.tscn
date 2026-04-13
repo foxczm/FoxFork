@@ -33,15 +33,6 @@ fill_to = Vector2(0.8076923, 0.13247864)
 transparency = 1
 albedo_texture = SubResource("GradientTexture2D_8i7tb")
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_i77xa"]
-
-[sub_resource type="Sky" id="Sky_flvx3"]
-sky_material = SubResource("ProceduralSkyMaterial_i77xa")
-
-[sub_resource type="Environment" id="Environment_8i7tb"]
-background_mode = 2
-sky = SubResource("Sky_flvx3")
-
 [sub_resource type="Gradient" id="Gradient_8i7tb"]
 colors = PackedColorArray(1, 1, 1, 0, 0, 0, 0, 0.15294118)
 
@@ -90,9 +81,6 @@ material = SubResource("StandardMaterial3D_frsov")
 transform = Transform3D(0.52, 0, 0, 0, 0.52, 0, 0, 0, 0.52, -0.0033812523, -4.246684, -4.9117584)
 size = Vector3(5.9040527, 0.05810547, 6.897705)
 material = SubResource("StandardMaterial3D_frsov")
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="PanelContainer/SubViewportContainer/SubViewport" unique_id=699360747]
-environment = SubResource("Environment_8i7tb")
 
 [node name="Camera3D" type="Camera3D" parent="PanelContainer/SubViewportContainer/SubViewport" unique_id=594467270]
 
