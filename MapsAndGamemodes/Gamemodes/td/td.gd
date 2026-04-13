@@ -2,12 +2,12 @@ extends Map
 class_name TD
 #deathmatch
 
-const LEADER_BOARD = preload("res://MapsAndGamemodes/Gamemodes/PresetGamemodeWidgets/Leaderboard/LeaderBoard.tscn")
+const LEADER_BOARD = preload("res://MapsAndGamemodes/Gamemodes/dm/LeaderBoardTDM.tscn")
 const DM_UI = preload("res://MapsAndGamemodes/Gamemodes/PresetGamemodeWidgets/VersusUI/VSUI.tscn")
 const CHAR_SELECT = preload("res://MapsAndGamemodes/Gamemodes/PresetGamemodeWidgets/CharacterSelect/CharacterSelect.tscn")
 const DEATHMATCH_SIDE_CHOICE_BUTTON = preload("res://MapsAndGamemodes/Gamemodes/dm/deathmatch side choice button.tscn")
 
-var leaderboard: LeaderBoard 
+var leaderboard: TDMLeaderBoard 
 var match_ui: VSUI
 var char_select_ui # Reference to the local UI
 var team_select_ui 
@@ -224,6 +224,10 @@ func submit_team_choice(team_name: String):
 	# Update the team and broadcast to all clients
 	master_team_database[sender_id] = team_name
 	update_client_team_databases.rpc(master_team_database)
+	
+	# --- NEW: Tell the leaderboard to update this player's team ---
+	if leaderboard and leaderboard.has_method("set_player_team"):
+		leaderboard.set_player_team(sender_id, team_name)
 	
 	# Only force a spawn if they ALSO have a character selected
 	if master_character_database.has(sender_id) and respawn_trackers.has(sender_id) and respawn_trackers[sender_id]["is_dead"]:

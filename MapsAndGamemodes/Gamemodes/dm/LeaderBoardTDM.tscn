@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c57ao4jwnwwia"]
 
-[ext_resource type="Script" uid="uid://cs0ihr4j4mhhv" path="res://MapsAndGamemodes/Gamemodes/PresetGamemodeWidgets/Leaderboard/leaderboard.gd" id="1_yok3q"]
+[ext_resource type="Script" uid="uid://dqc3trup00bqf" path="res://MapsAndGamemodes/Gamemodes/dm/tdmleaderboard.gd" id="1_rsvx5"]
 
 [node name="LeaderBoardUI" type="Control" unique_id=2123499602]
 layout_mode = 3
@@ -13,7 +13,7 @@ offset_right = -247.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-script = ExtResource("1_yok3q")
+script = ExtResource("1_rsvx5")
 
 [node name="Panel" type="Panel" parent="." unique_id=1696344435]
 layout_mode = 1
