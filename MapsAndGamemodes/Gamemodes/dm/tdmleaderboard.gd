@@ -11,13 +11,11 @@ const TEAM_COLORS = {
 # SERVER API OVERRIDES & ADDITIONS
 # ==========================================
 
-# Need to override the base add_player so we track team data right away
 func add_player(player_id: int) -> void:
 	if not multiplayer.is_server(): return
 	stats[player_id] = { "kills": 0, "deaths": 0, "is_dead": true, "team": "default" }
 	_sync_stats.rpc(stats)
 
-# NEW: The TD Map will call this when a player selects a team
 func set_player_team(player_id: int, team: String) -> void:
 	if not multiplayer.is_server(): return
 	if stats.has(player_id):
@@ -57,8 +55,10 @@ func update_ui() -> void:
 		var team = player_data.get("team", "default")
 		var status = "DEAD" if player_data.get("is_dead", true) else "ALIVE"
 		
+		var player_name = get_gamertag(player_id) # INHERITED HELPER
+		
 		var label = Label.new()
-		label.text = "Player %s | Kills: %d | Deaths: %d | %s" % [str(player_id), kills, deaths, status]
+		label.text = "%s | Kills: %d | Deaths: %d | %s" % [player_name, kills, deaths, status]
 		
 		if TEAM_COLORS.has(team):
 			label.add_theme_color_override("font_color", TEAM_COLORS[team])
@@ -111,9 +111,10 @@ func show_end_game_showcase(top_players: Array) -> void:
 	for i in range(top_players.size()):
 		var p_id = top_players[i]
 		var p_data = stats[p_id]
+		var p_name = get_gamertag(p_id) # INHERITED HELPER
 		var label = Label.new()
 		
-		label.text = "#%d: Player %s - %d Kills" % [i + 1, str(p_id), p_data["kills"]]
+		label.text = "#%d: %s - %d Kills" % [i + 1, p_name, p_data["kills"]]
 		
 		var team = p_data.get("team", "default")
 		if TEAM_COLORS.has(team):

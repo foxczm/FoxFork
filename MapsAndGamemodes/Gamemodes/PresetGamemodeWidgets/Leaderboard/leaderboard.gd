@@ -22,6 +22,13 @@ func _process(_delta: float) -> void:
 		else:
 			hide()
 
+# --- NEW HELPER: Fetch gamertag from ServerDatabase ---
+func get_gamertag(id: int) -> String:
+	if ServerDatabase.Players.has(id):
+		# Grabs the gamertag, defaults back to ID if for some reason it's missing
+		return str(ServerDatabase.Players[id].get("gamertag", id)) 
+	return str(id)
+
 # ==========================================
 # SERVER API (Called by the Map Script)
 # ==========================================
@@ -42,8 +49,6 @@ func record_death(player_id: int) -> void:
 	if stats.has(player_id):
 		stats[player_id]["deaths"] += 1
 		stats[player_id]["is_dead"] = true
-		# Also need to make sure the killer gets credit elsewhere, 
-		# but for now we just record the death!
 		_sync_stats.rpc(stats)
 
 func record_kill(player_id: int) -> void:
@@ -52,14 +57,12 @@ func record_kill(player_id: int) -> void:
 		stats[player_id]["kills"] += 1
 		_sync_stats.rpc(stats)
 
-# The map must call this when a respawn timer finishes!
 func set_player_alive(player_id: int) -> void:
 	if not multiplayer.is_server(): return
 	if stats.has(player_id):
 		stats[player_id]["is_dead"] = false
 		_sync_stats.rpc(stats)
 
-# --- NEW: Helper to get Top Players based on Kills ---
 func get_top_players(limit: int = 3) -> Array:
 	var sorted_players = stats.keys()
 	
@@ -74,7 +77,6 @@ func get_top_players(limit: int = 3) -> Array:
 	
 	# Return up to 'limit' players
 	return sorted_players.slice(0, min(limit, sorted_players.size()))
-
 
 # ==========================================
 # NETWORKING & UI
@@ -97,14 +99,14 @@ func update_ui() -> void:
 		
 		var kills = player_data["kills"]
 		var deaths = player_data["deaths"]
-		
 		var status = "DEAD" if player_data.get("is_dead", true) else "ALIVE"
 		
+		var player_name = get_gamertag(player_id) # USE THE HELPER
+		
 		var label = Label.new()
-		label.text = "Player %s | Kills: %d | Deaths: %d | %s" % [str(player_id), kills, deaths, status]
+		label.text = "%s | Kills: %d | Deaths: %d | %s" % [player_name, kills, deaths, status]
 		v_box_container.add_child(label)
 
-# --- NEW: RPC to trigger the end game showcase on all clients ---
 @rpc("authority", "call_local", "reliable")
 func show_end_game_showcase(top_players: Array) -> void:
 	is_showcasing = true
@@ -127,19 +129,18 @@ func show_end_game_showcase(top_players: Array) -> void:
 	for i in range(top_players.size()):
 		var p_id = top_players[i]
 		var p_data = stats[p_id]
+		var p_name = get_gamertag(p_id) # USE THE HELPER
 		var label = Label.new()
 		
 		if i == 0:
-			label.text = "🏆 1ST PLACE: Player %s - %d Kills / %d Deaths 🏆" % [str(p_id), p_data["kills"], p_data["deaths"]]
+			label.text = "🏆 1ST PLACE: %s - %d Kills / %d Deaths 🏆" % [p_name, p_data["kills"], p_data["deaths"]]
 			label.add_theme_color_override("font_color", Color("gold"))
-			label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		elif i == 1:
-			label.text = "🥈 2ND PLACE: Player %s - %d Kills / %d Deaths" % [str(p_id), p_data["kills"], p_data["deaths"]]
+			label.text = "🥈 2ND PLACE: %s - %d Kills / %d Deaths" % [p_name, p_data["kills"], p_data["deaths"]]
 			label.add_theme_color_override("font_color", Color("silver"))
-			label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		elif i == 2:
-			label.text = "🥉 3RD PLACE: Player %s - %d Kills / %d Deaths" % [str(p_id), p_data["kills"], p_data["deaths"]]
+			label.text = "🥉 3RD PLACE: %s - %d Kills / %d Deaths" % [p_name, p_data["kills"], p_data["deaths"]]
 			label.add_theme_color_override("font_color", Color("cd7f32")) # Bronze
-			label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 			
+		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		v_box_container.add_child(label)
