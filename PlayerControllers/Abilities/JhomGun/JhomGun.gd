@@ -11,6 +11,7 @@ extends WeaponAbility
 @export var max_ammo: int = 12
 @export var damage: float = 10.0
 @export var fire_speed: float = 0.1 # Time in seconds between shots
+@export var self_dmg: float = 50.0
 
 @export_category("Weapon Movement Juice")
 @export var weapon_mesh: Node3D # ASSIGN YOUR VISUAL GUN MODEL HERE!
@@ -75,6 +76,11 @@ func reload():
 	label.text = str(ammo) + "/" + str(max_ammo)
 
 func shoot():
+	if ammo > 0:
+		(get_parent() as Merc).take_damage(self_dmg)
+		print(merc.health)
+	
+	
 	if ammo <= 0:
 		# Optional: Play a "click" sound here for empty ammo
 		return

@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://cyx8a17im3c2v"]
+
+[ext_resource type="Script" uid="uid://d4glxp3tcbso7" path="res://PlayerControllers/Abilities/JhomPassiveHeal/JhomPassiveHeal.gd" id="1_ffnyh"]
+
+[node name="SprintAbility" type="Node3D" unique_id=699710493]
+script = ExtResource("1_ffnyh")
+trigger_key = "Shift"

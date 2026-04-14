@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://hqvx56rm4d4t"]
+
+[ext_resource type="Script" uid="uid://2ip0lrtrrhsr" path="res://PlayerControllers/merc.gd" id="1_jn38g"]
+[ext_resource type="PackedScene" uid="uid://dtt040tc2mxaw" path="res://PlayerControllers/Abilities/JhomGrenade/Jhomnade.tscn" id="3_lf357"]
+[ext_resource type="PackedScene" uid="uid://c3oy0wg2u78mi" path="res://PlayerControllers/Abilities/JhomGun/JhomGun.tscn" id="3_u4ja2"]
+[ext_resource type="PackedScene" uid="uid://pq4sw4wax5ei" path="res://PlayerControllers/Abilities/JhomMunch/JhomMunch.tscn" id="4_u4ja2"]
+[ext_resource type="PackedScene" uid="uid://cyx8a17im3c2v" path="res://PlayerControllers/Abilities/JhomPassiveHeal/JhomPassiveHeal.tscn" id="5_tiihf"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jn38g"]
+
+[node name="Jhomas" type="CharacterBody3D" unique_id=391993870 node_paths=PackedStringArray("camera", "abilities")]
+script = ExtResource("1_jn38g")
+camera = NodePath("Camera3D")
+health = 250.0
+health_per_sec = 10.0
+air_acceleration = 0.15
+speed = 0.75
+debug_mode = true
+abilities = [NodePath("JhomGun"), NodePath("JhomNade"), NodePath("JhomMunch"), null]
+metadata/_custom_type_script = "uid://2ip0lrtrrhsr"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=454491209]
+shape = SubResource("CapsuleShape3D_jn38g")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=272972744]
+
+[node name="JhomGun" parent="." unique_id=1600695075 instance=ExtResource("3_u4ja2")]
+max_ammo = 1
+damage = 75.0
+fire_speed = 1.0
+self_dmg = 65.0
+
+[node name="JhomNade" parent="." unique_id=769399586 instance=ExtResource("3_lf357")]
+cool_down = 0.0
+fuse_time = 1.0
+damage = 80.0
+self_dmg = 100.0
+
+[node name="JhomMunch" parent="." unique_id=1222613150 instance=ExtResource("4_u4ja2")]
+cool_down = 30.0
+fuse_time = 0.001
+throw_strength = 0.001
+damage = 9999999.0
+self_dmg = 0.0
+trigger_key = "E"
+
+[node name="JhomPassiveHeal" parent="." unique_id=699710493 node_paths=PackedStringArray("merc") instance=ExtResource("5_tiihf")]
+merc = NodePath("..")
+AbilityDescription = "Jhomas passively heals"
+trigger_key = "Passive"
+
+[node name="HealDelay" type="Timer" parent="." unique_id=351980933]
+one_shot = true
+autostart = true

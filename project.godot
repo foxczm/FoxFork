@@ -48,6 +48,10 @@ folder_colors={
 "res://PrototypeAssets/": "gray"
 }
 
+[filesystem]
+
+import/blender/enabled=false
+
 [global_group]
 
 LobbyContainer=""

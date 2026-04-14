@@ -6,12 +6,14 @@ signal took_damage
 ## THIS THE BASE CLASS, DO NOT CHANGE AN OF THIS UNLESS ITS IN THE INSPECTOR
 const ABILITY_UI = preload("res://Misc/UI/ability_ui.tscn")
 const MERC_LABEL = preload("res://MultiplayerStuff/Client/MercLabel.tscn")
+@onready var heal_delay: Timer = $HealDelay
 
 @export_category("REQUIRED OBJECTS")
 @export var camera : Camera3D
 
 @export_group("Universal Properties")
 @export var health :float = 100.0
+@export var health_per_sec = 5.0
 @export var gravity := 9.8
 @export var friction := .1
 @export var air_acceleration := .3
@@ -21,6 +23,7 @@ const MERC_LABEL = preload("res://MultiplayerStuff/Client/MercLabel.tscn")
 @export var merc_UI_color : Color
 @export var camera_fov : float = 90.0
 @export var debug_mode : bool = false
+
 
 @export var abilities : Array[Ability]
 #reminder abilities  can have their own ui
@@ -34,6 +37,8 @@ var dead = false
 var ability_ui 
 var team: String = "default"
 var player_teams: Dictionary = {}
+var timer : Timer
+
 
 const TEAM_COLORS = {
 	"default": Color.WHITE,
@@ -41,8 +46,9 @@ const TEAM_COLORS = {
 	"blue": Color.BLUE
 }
 
-
 func _ready() -> void:
+	
+	
 	# ==========================================
 	# DEBUG MODE SETUP
 	# ==========================================
@@ -394,6 +400,16 @@ func die():
 	emit_signal("died", self)
 
 func custom_process(delta : float):
+	if health >= 250.0:
+		health = 250.0
+	else:
+		if heal_delay.is_stopped():
+			take_damage(health_per_sec*-1)
+			print(health)
+			heal_delay.start()
+		
+		
+	pass
 	pass #use this for addons, physics process is used for default movement
 func custom_ready():
 	pass

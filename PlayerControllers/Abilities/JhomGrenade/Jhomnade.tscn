@@ -1,0 +1,260 @@
+[gd_scene format=3 uid="uid://dtt040tc2mxaw"]
+
+[ext_resource type="Script" uid="uid://df4xsfddtl2a8" path="res://PlayerControllers/Abilities/JhomGrenade/Jhomnade.gd" id="1_wdesv"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_seah1"]
+radius = 0.09082031
+height = 0.4013672
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_seah1"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ypg12"]
+radius = 1.790106
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_26k3f"]
+vertex_color_use_as_albedo = true
+
+[sub_resource type="SphereMesh" id="SphereMesh_8vxmg"]
+material = SubResource("StandardMaterial3D_26k3f")
+
+[sub_resource type="Gradient" id="Gradient_nla6h"]
+colors = PackedColorArray(0, 0, 0, 1, 0.9544688, 0.10710748, 0, 1)
+
+[sub_resource type="Animation" id="Animation_pc0d5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Hand:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Hand:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_nla6h"]
+resource_name = "dequip"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Hand:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.11022457),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.42329928, -0.23782785, -0.66948545), Vector3(0.42329928, -0.8561233, -0.29262486)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Hand:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.3228509, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_seah1"]
+resource_name = "equip"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Hand:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(0.2176377, 1),
+"update": 0,
+"values": [Vector3(0.42329928, -0.4683984, 0), Vector3(0.42329928, -0.23782785, -0.66948545)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Hand:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(0.1538931, 1),
+"update": 0,
+"values": [Vector3(-2.3525293, 0, 0), Vector3(-0.3228509, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_ypg12"]
+resource_name = "hold_to_throw"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Hand:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.058102872),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.42329928, -0.23782785, -0.66948545), Vector3(0.42329928, -0.06399463, -0.66948545)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Hand:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.058102872),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(-0.3228509, 0, 0), Vector3(0.404707, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_26k3f"]
+resource_name = "idle"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Hand:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.42329928, -0.23782785, -0.66948545)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Hand:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.3228509, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_8vxmg"]
+resource_name = "throw"
+length = 0.048
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Hand:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.040159337),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.42329928, -0.06399463, -0.66948545), Vector3(0.42329928, -0.056609645, -0.9350784)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Hand:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.040159337),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.404707, 0, 0), Vector3(-0.79576534, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nla6h"]
+_data = {
+&"RESET": SubResource("Animation_pc0d5"),
+&"dequip": SubResource("Animation_nla6h"),
+&"equip": SubResource("Animation_seah1"),
+&"hold_to_throw": SubResource("Animation_ypg12"),
+&"idle": SubResource("Animation_26k3f"),
+&"throw": SubResource("Animation_8vxmg")
+}
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_seah1"]
+properties/0/path = NodePath("Grenade:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
+[node name="GrenadeAbility" type="Node3D" unique_id=1600695075 node_paths=PackedStringArray("visual_hand")]
+script = ExtResource("1_wdesv")
+AbilityDescription = "Blow them bitsy itsy bitsy spider style"
+visual_hand = NodePath("Grenade/MeshInstance3D")
+trigger_key = "G"
+
+[node name="Grenade" type="RigidBody3D" parent="." unique_id=2084771126]
+transform = Transform3D(1, 0, 0, 0, 0.6997382, 0.71439934, 0, -0.71439934, 0.6997382, 0.42329928, -0.056609645, -0.9350784)
+top_level = true
+collision_layer = 0
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Grenade" unique_id=939373278]
+transform = Transform3D(1, -1.1920929e-07, 1.4901161e-08, 0, 1, -1.4901161e-08, 0, 0, 1, 1.4901161e-07, -0.020019472, 1.1920929e-07)
+shape = SubResource("CapsuleShape3D_seah1")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Grenade" unique_id=1314847097]
+transform = Transform3D(0.17672029, 0, 0, 0, 0.17672029, 0, 0, 0, 0.17672029, 0, 0, 0)
+mesh = SubResource("CylinderMesh_seah1")
+
+[node name="ExplosionRadius" type="Area3D" parent="Grenade" unique_id=83263472]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Grenade/ExplosionRadius" unique_id=1608404638]
+transform = Transform3D(1.4343741, -5.9604645e-08, 2.9802322e-08, 0, 1.4343741, 0, -1.4901161e-08, 1.4901161e-08, 1.4343741, 0, 0, 0)
+shape = SubResource("SphereShape3D_ypg12")
+debug_color = Color(0.77254903, 0, 0.09803922, 0.7921569)
+
+[node name="CPUParticles3D" type="CPUParticles3D" parent="Grenade" unique_id=800159809]
+emitting = false
+amount = 30
+lifetime = 3.0
+one_shot = true
+explosiveness = 1.0
+mesh = SubResource("SphereMesh_8vxmg")
+emission_shape = 1
+emission_sphere_radius = 2.24
+spread = 180.0
+gravity = Vector3(0, -5, 0)
+initial_velocity_min = 3.0
+initial_velocity_max = 7.0
+color = Color(0.5449743, 0.54497427, 0.54497427, 1)
+color_initial_ramp = SubResource("Gradient_nla6h")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1003770326]
+
+[node name="Hand" type="RemoteTransform3D" parent="." unique_id=298106922]
+remote_path = NodePath("../Grenade")
+
+[node name="FuseTimer" type="Timer" parent="." unique_id=1510142201]
+one_shot = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1062011076]
+libraries/ = SubResource("AnimationLibrary_nla6h")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=888136363]
+replication_config = SubResource("SceneReplicationConfig_seah1")
+
+[connection signal="timeout" from="FuseTimer" to="." method="_on_fuse_timer_timeout"]
